@@ -1,8 +1,10 @@
 package com.thp.gps.controller;
 
+import com.thp.gps.controller.dto.ResponseMessageDTO;
 import com.thp.gps.model.PontosInteresse;
 import com.thp.gps.model.PontosInteresseDTO;
 import com.thp.gps.repository.PontosInteresseRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,12 +50,15 @@ public class PontoInteresseController {
     }
 
     @DeleteMapping("/pontos-de-interesse/{id}")
-    public ResponseEntity<Void> deletarPontoInteresse(@PathVariable("id") Long id) {
+    public ResponseEntity<ResponseMessageDTO> deletarPontoInteresse(@PathVariable Long id) {
         if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseMessageDTO("Ponto de interesse com ID " + id + " não encontrado"));
         }
         repository.deleteById(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity
+                .ok(new ResponseMessageDTO("Ponto de interesse com ID " + id + " deletado com sucesso"));
     }
 
     public double distanciaEuclidiana(long x1, long y1, long x2, long y2) {
