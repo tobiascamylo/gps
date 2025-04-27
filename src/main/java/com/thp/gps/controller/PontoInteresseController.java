@@ -20,9 +20,11 @@ public class PontoInteresseController {
     }
 
     @PostMapping("/pontos-de-interesse")
-    public ResponseEntity<Void> pontosInteresseCriar(@RequestBody PontosInteresseDTO body) {
+    public ResponseEntity<ResponseMessageDTO> pontosInteresseCriar(@RequestBody PontosInteresseDTO body) {
         repository.save(new PontosInteresse(body.nome(), body.x(), body.y()));
-        return ResponseEntity.ok().build();
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ResponseMessageDTO("Ponto de interesse criado com sucesso"));
     }
 
     @GetMapping("/listar-pontos-de-interesse")
