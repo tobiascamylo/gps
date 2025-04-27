@@ -18,32 +18,34 @@ public class PontoInteresseController {
     }
 
     @PostMapping("/pontos-de-interesse")
-    public ResponseEntity<Void>pontosInteresseCriar(@RequestBody PontosInteresseDTO body){
+    public ResponseEntity<Void> pontosInteresseCriar(@RequestBody PontosInteresseDTO body) {
         repository.save(new PontosInteresse(body.nome(), body.x(), body.y()));
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/listar-pontos-de-interesse")
-    public ResponseEntity<List<PontosInteresse>> listarPontosInteresse(){
+    public ResponseEntity<List<PontosInteresse>> listarPontosInteresse() {
         List<PontosInteresse> listaInteresse = repository.findAll();
         return ResponseEntity.ok(listaInteresse);
     }
 
     @GetMapping("/listar-pontos-proximos")
-    public ResponseEntity<List<PontosInteresse>> listarPontosProximos(@RequestParam("x") Long x, @RequestParam("y") Long y,@RequestParam("dmax") Long dmax){
+    public ResponseEntity<List<PontosInteresse>> listarPontosProximos(
+            @RequestParam("x") Long x,
+            @RequestParam("y") Long y,
+            @RequestParam("dmax") Long dmax
+    ) {
+        long xMin = x - dmax, xMax = x + dmax;
+        long yMin = y - dmax, yMax = y + dmax;
 
-        long xMin = x - dmax;
-        long xMax = x + dmax;
-        long yMin = y - dmax;
-        long yMax = y + dmax;
-        List<PontosInteresse>pontosFiltradosInteresse = repository.findPontosInteresseProximos(xMin, xMax, yMin, yMax)
+        var pontosFiltrados = repository
+                .findByXBetweenAndYBetween(xMin, xMax, yMin, yMax)
                 .stream()
-                .filter(p -> distanciaEuclidiana(x,y, p.getX(), p.getY()) <= dmax)
+                .filter(p -> distanciaEuclidiana(x, y, p.getX(), p.getY()) <= dmax)
                 .toList();
 
-        return ResponseEntity.ok(pontosFiltradosInteresse);
-    };
-
+        return ResponseEntity.ok(pontosFiltrados);
+    }
     public double distanciaEuclidiana(long x1, long y1, long x2, long y2) {
         return Math.hypot(x2 - x1, y2 - y1);
     }

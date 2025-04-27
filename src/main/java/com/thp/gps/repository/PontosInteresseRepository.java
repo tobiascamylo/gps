@@ -7,19 +7,19 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface PontosInteresseRepository extends JpaRepository<PontosInteresse, Long> {
+public interface PontosInteresseRepository
+        extends JpaRepository<PontosInteresse, Long> {
 
-    @Query(
-            """
-            SELECT p FROM tb_pontos_interesse p
-            WHERE (p.x >= :xmin AND p.x <= :xmax)
-            AND (p.y >= :ymin AND p.y <= :ymax)
-            ORDER BY p.x, p.y
-            """
-
-    )
-    List<PontosInteresse> findPontosInteresseProximos(@Param("xmin") Long xmin,
-                                                      @Param("xmax") Long xmax,
-                                                      @Param("ymin") Long ymin,
-                                                      @Param("ymax") Long ymax);
+    @Query("""
+      SELECT p
+        FROM PontosInteresse p
+       WHERE p.x BETWEEN :xMin AND :xMax
+         AND p.y BETWEEN :yMin AND :yMax
+      """)
+    List<PontosInteresse> findByXBetweenAndYBetween(
+            @Param("xMin") Long xMin,
+            @Param("xMax") Long xMax,
+            @Param("yMin") Long yMin,
+            @Param("yMax") Long yMax
+    );
 }
