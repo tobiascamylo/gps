@@ -151,4 +151,5 @@ Internamente, a API utiliza:
   }
 ]
 ```
-
+📄 Licença
+ - Este projeto é distribuído sob a MIT License.
