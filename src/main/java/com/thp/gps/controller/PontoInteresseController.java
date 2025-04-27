@@ -46,6 +46,16 @@ public class PontoInteresseController {
 
         return ResponseEntity.ok(pontosFiltrados);
     }
+
+    @DeleteMapping("/pontos-de-interesse/{id}")
+    public ResponseEntity<Void> deletarPontoInteresse(@PathVariable("id") Long id) {
+        if (!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        repository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
     public double distanciaEuclidiana(long x1, long y1, long x2, long y2) {
         return Math.hypot(x2 - x1, y2 - y1);
     }

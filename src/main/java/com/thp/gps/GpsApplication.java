@@ -34,6 +34,7 @@ public class GpsApplication implements CommandLineRunner {
 		repository.save(new PontosInteresse("Pub", 12L, 8L));
 		repository.save(new PontosInteresse("Supermercado", 23L, 6L));
 		repository.save(new PontosInteresse("Churrascaria", 28L, 2L));
+		repository.save(new PontosInteresse("Quadra de Volei", 32L, 21L));
 
 	}
 }
