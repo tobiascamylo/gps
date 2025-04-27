@@ -42,7 +42,7 @@ public class PontoInteresseController {
                 .toList();
 
         return ResponseEntity.ok(pontosFiltradosInteresse);
-    })
+    };
 
     public double distanciaEuclidiana(long x1, long y1, long x2, long y2) {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
